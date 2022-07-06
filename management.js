@@ -6,7 +6,7 @@ var auth0 = new ManagementClient({
     domain: "pocsetup.us.auth0.com",
     clientId: "Rkr5gvfOfQI6GgA3y90U8KIjBFlcEPkJ",
     clientSecret: '8hpb1FLclLjimjt5uXA0WH4uP36NT9aSh5XPOlrWYX3BfXQuOpo-ngIUknceRGtN',
-    scope: 'read:users update:users'
+    scope: 'read:users update:users update:current_user_metadata'
 });
 
 exports.updateUserMetadata = (userId, pizzaName) => {
