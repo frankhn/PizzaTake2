@@ -232,20 +232,20 @@
             Update your information:
           </p>
 
-          <form action="https://jsonplaceholder.typicode.com/users" id="example-form">
+          <form action="https://pocsetup.us.auth0.com/api/v2/users" id="example-form">
             <label for="first-name">
               User Address:
-              <input type="text" name="address" id="user-address">
+              <input type="text" required name="address" id="user-address">
             </label>
-          
             <label for="last-name">
               Phone Number:
-              <input type="text" name="phone_number" id="phone-number">
+              <input type="text" required name="phone_number" id="phone-number" pattern="^[0-9]{10}$"
+              title="Must be 10 digits" autocomplete="off" aria-errormessage="Must be 10 digits">
             </label>
 
             <label for="last-name">
               Favorite Pizza:
-              <input type="text" name="favorite_pizza" id="favorite-pizza">
+              <input type="text" required name="favorite_pizza" id="favorite-pizza">
             </label>
           
             <input type="submit" value="Update your information">
