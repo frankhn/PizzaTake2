@@ -43,22 +43,3 @@ exports.updateUserMetadata = (userId, pizzaName) => {
             console.log(err);
         });
 }
-
-exports.updateuserInfor = async (userId, data) => {
-    let user = await auth0.getUser(userId)
-    user.phone_number = data.phone_number
-    user.phone_verified = false
-    user.user_metadata = {
-        address: data.address,
-        favorite_pizza: data.favorite_pizza
-    }
-
-    const params = { id: user._id }
-    auth0.updateUser(params, user, (err, user) => {
-        console.log(user, "updated successfully")
-        if (error) {
-            console.log(error, "error occured")
-        }
-        return user
-    })
-}

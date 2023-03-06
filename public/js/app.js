@@ -152,40 +152,28 @@ const callApi = async (pizzaName) => {
  * @return {Object} - Response body from URL that was POSTed to
  */
  async function postFormDataAsJson({ url, formData }) {
-const plainFormData = Object.fromEntries(formData.entries());
-const formDataJsonString = JSON.stringify(plainFormData);
-const token = await auth0.getTokenSilently();
-const user = await auth0.getUser()
-const payload = {
-  "connection": "Initial-Connection",
-  "phone_number": formData.get('phone_number'),
-  "phone_verified": false,
-  "user_metadata": {
-    "address": formData.get('address'),
-    "favorite_pizza": formData.get('favorite_pizza')
-  },
-}
-const fetchOptions = {
-  method: "PATCH",
-  url: `https://pocsetup.us.auth0.com/api/v2/users/${user.sub}`,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-    Accept: "application/json",
-  },
-  body: JSON.stringify(payload),
-};
+	const plainFormData = Object.fromEntries(formData.entries());
+	const formDataJsonString = JSON.stringify(plainFormData);
 
-try {
-  const response = await fetch(`/api/update_user/:${user.sub}`, fetchOptions);
-  if (!response.ok) {
-    const errorMessage = await response.text();
-    throw new Error(errorMessage);
-  }
-  return response.json();
-} catch (error) {
-  console.log(error)
-}
+	const fetchOptions = {
+		method: "PATCH",
+    url: 'https://pocsetup.us.auth0.com/api/v2/users/user_id',
+		headers: {
+			"Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+			Accept: "application/json",
+		},
+		body: formDataJsonString,
+	};
+
+	const response = await fetch(url, fetchOptions);
+
+	if (!response.ok) {
+		const errorMessage = await response.text();
+		throw new Error(errorMessage);
+	}
+
+	return response.json();
 }
 
 /**
@@ -194,22 +182,23 @@ try {
  * @param {SubmitEvent} event
  */
 async function handleFormSubmit(event) {
-event.preventDefault();
-const form = event.currentTarget;
-const url = form.action;
+	event.preventDefault();
 
-try {
-  const formData = new FormData(form);
-  const responseData = await postFormDataAsJson({ url, formData });
+	const form = event.currentTarget;
+	const url = form.action;
 
-  // console.log({ responseData });
-} catch (error) {
-  console.error(error);
+	try {
+		const formData = new FormData(form);
+		const responseData = await postFormDataAsJson({ url, formData });
+
+		console.log({ responseData });
+	} catch (error) {
+		console.error(error);
+	}
 }
-}
 
-  const exampleForm = document.getElementById("example-form");
-  exampleForm.addEventListener("submit", handleFormSubmit);
+const exampleForm = document.getElementById("example-form");
+exampleForm.addEventListener("submit", handleFormSubmit);
 
 
   // If unable to parse the history hash, default to the root URL
